@@ -125,6 +125,12 @@ Type: `Function`
 
 Event handler for the `keyUp` event on the typeahead input.
 
+#### props.onEscape
+
+Type: `Function`
+
+Event handler for the `ESC keyDown` event on the typeahead input.
+
 #### props.onBlur
 
 Type: `Function`
