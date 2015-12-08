@@ -513,6 +513,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     customClasses: React.PropTypes.object,
     maxVisible: React.PropTypes.number,
     options: React.PropTypes.array,
+    showOptionsOnFocus: React.PropTypes.bool,
     allowCustomValues: React.PropTypes.number,
     defaultValue: React.PropTypes.string,
     value: React.PropTypes.string,
@@ -525,6 +526,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     onKeyUp: React.PropTypes.func,
     onFocus: React.PropTypes.func,
     onBlur: React.PropTypes.func,
+    clearOnBlur: React.PropTypes.bool,
     filterOption: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.func
@@ -548,6 +550,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     return {
       options: [],
       customClasses: {},
+      showOptionsOnFocus: false,
       allowCustomValues: 0,
       defaultValue: "",
       value: null,
@@ -560,6 +563,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
       onKeyUp: function(event) {},
       onFocus: function(event) {},
       onBlur: function(event) {},
+      clearOnBlur: false,
       filterOption: null,
       defaultClassNames: true,
       customListComponent: TypeaheadSelector
@@ -585,7 +589,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
   getOptionsForValue: function(value, options, focused) {
     if (!SHOULD_SEARCH_VALUE(value) && !focused) { return []; }
     var filterOptions = this._generateFilterFunction();
-    var showAll = value == '' && focused && options.lenght;
+    var showAll = (this.props.showOptionsOnFocus && value == '' && focused && options.lenght);
     var result = showAll ? options : filterOptions(value, options);
     if (this.props.maxVisible) {
       result = result.slice(0, this.props.maxVisible);
@@ -620,9 +624,9 @@ var Typeahead = React.createClass({displayName: "Typeahead",
 
   _renderIncrementalSearchResults: function() {
     // Nothing has been entered into the textbox
-    // if (!this.state.entryValue) {
-    //   return "";
-    // }
+    if (!this.state.entryValue && !this.props.showOptionsOnFocus) {
+      return "";
+    }
 
     // Something was just selected
     if (this.state.selection) {
@@ -722,12 +726,13 @@ var Typeahead = React.createClass({displayName: "Typeahead",
       this.props.onBlur(event);
     }
 
-    this.setState({
-      selection: null,
-      entryValue: '',
-      focused: false,
-      visible: []
-    });
+    if (this.props.clearOnBlur)
+      this.setState({
+        selection: null,
+        entryValue: '',
+        focused: false,
+        visible: []
+      });
   },
 
   eventMap: function(event) {
