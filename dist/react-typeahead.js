@@ -525,6 +525,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     onKeyDown: React.PropTypes.func,
     onKeyUp: React.PropTypes.func,
     onFocus: React.PropTypes.func,
+    onEscape: React.PropTypes.func,
     onBlur: React.PropTypes.func,
     clearOnBlur: React.PropTypes.bool,
     filterOption: React.PropTypes.oneOfType([
@@ -690,6 +691,10 @@ var Typeahead = React.createClass({displayName: "Typeahead",
   },
 
   _onEscape: function() {
+    if (this.props.onEscape) {
+      this.props.onEscape(event);
+    }
+
     this.setState({
       selectionIndex: null
     });
