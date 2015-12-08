@@ -62,6 +62,13 @@ Default: []
 
 An array supplied to the filtering function. Can be a list of strings or a list of arbitrary objects. In the latter case, `filterOption` and `displayOption` should be provided.
 
+#### props.showOptionsOnFocus
+
+Type: `boolean`
+Default: false
+
+If true, when input has focus, options list will be displayed
+
 #### props.defaultValue
 
 Type: `String`
@@ -135,6 +142,13 @@ Event handler for the `focus` event on the typeahead input.
 Type: `Function`
 
 Event handler triggered whenever a user picks an option.
+
+#### props.clearOnBlur
+
+Type: `boolean`
+Default: false
+
+If true, on input blur, options list will be hidden
 
 #### props.filterOption
 
